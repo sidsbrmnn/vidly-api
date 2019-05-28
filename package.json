@@ -1,0 +1,49 @@
+{
+  "name": "vidly-api",
+  "version": "1.0.0",
+  "description": "API for Vidly using Node.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "10.15.3"
+  },
+  "keywords": [
+    "vidly",
+    "node"
+  ],
+  "author": "Siddharth Subramanian",
+  "license": "MIT",
+  "dependencies": {
+    "@hapi/joi": "^15.0.3",
+    "bcrypt": "^3.0.6",
+    "compression": "^1.7.4",
+    "config": "^3.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.0",
+    "express-async-errors": "^3.1.1",
+    "fawn": "^2.1.5",
+    "helmet": "^3.18.0",
+    "joi-objectid": "^2.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "mongoose": "^5.5.11",
+    "morgan": "^1.9.1",
+    "winston": "^2.4.4",
+    "winston-mongodb": "^3.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sidsbrmnn/vidly-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sidsbrmnn/vidly-api/issues"
+  },
+  "homepage": "https://github.com/sidsbrmnn/vidly-api#readme"
+}
