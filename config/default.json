@@ -1,5 +1,6 @@
 {
   "port": 3900,
   "db": "mongodb://localhost/vidly",
-  "jwtPrivateKey": "unsecureKey"
+  "jwtPrivateKey": "unsecureKey",
+  "requiresAuth": false
 }
