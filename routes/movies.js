@@ -1,4 +1,5 @@
 const express = require("express");
+const validateObjectId = require("../middleware/validateObjectId");
 const { Movie, validateMovie } = require("../models/movie");
 const { Genre } = require("../models/genre");
 
@@ -31,7 +32,7 @@ router.post("/", async (req, res) => {
   res.send(movie);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", validateObjectId, async (req, res) => {
   const { error } = validateMovie(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -58,7 +59,7 @@ router.put("/:id", async (req, res) => {
   res.send(movie);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", validateObjectId, async (req, res) => {
   const movie = await Movie.findOneAndDelete({ _id: req.params.id });
 
   if (!movie)
@@ -67,7 +68,7 @@ router.delete("/:id", async (req, res) => {
   res.send(movie);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateObjectId, async (req, res) => {
   const movie = await Movie.findOne({ _id: req.params.id });
 
   if (!movie)
