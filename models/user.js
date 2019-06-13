@@ -32,7 +32,6 @@ function validateUser(user) {
     password: Joi.string()
       .min(6)
       .max(16)
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]){6,16}$/)
       .required()
   };
 
