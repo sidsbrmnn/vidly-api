@@ -1,14 +1,15 @@
-const config = require("config");
-const mongoose = require("mongoose");
-const winston = require("winston");
+const { get } = require("config");
+const { connect } = require("mongoose");
+const { info } = require("winston");
 
 module.exports = function() {
-  const db = config.get("db");
-  mongoose
-    .connect(db, {
+  const db = get("db");
+  connect(
+    db,
+    {
       useNewUrlParser: true,
       useCreateIndex: true,
       useFindAndModify: false
-    })
-    .then(() => winston.info(`Connected to ${db}`));
+    }
+  ).then(() => info(`Connected to ${db}`));
 };

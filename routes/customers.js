@@ -1,9 +1,9 @@
-const express = require("express");
-const _ = require("lodash");
+const { Router } = require("express");
+const { pick } = require("lodash");
 const validateObjectId = require("../middleware/validateObjectId");
 const { Customer, validateCustomer } = require("../models/customer");
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", async (req, res) => {
   const customers = await Customer.find({}).sort("name");
@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
   const { error } = validateCustomer(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const customer = new Customer(_.pick(req.body, ["name", "phone", "isGold"]));
+  const customer = new Customer(pick(req.body, ["name", "phone", "isGold"]));
 
   await customer.save();
 
@@ -27,7 +27,7 @@ router.put("/:id", validateObjectId, async (req, res) => {
 
   const customer = await Customer.findOneAndUpdate(
     { _id: req.params.id },
-    _.pick(req.body, ["name", "phone", "isGold"]),
+    pick(req.body, ["name", "phone", "isGold"]),
     { new: true }
   );
 

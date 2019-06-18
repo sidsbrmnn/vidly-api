@@ -1,10 +1,10 @@
-const express = require("express");
+const { Router } = require("express");
 const admin = require("../middleware/admin");
 const auth = require("../middleware/auth");
 const validateObjectId = require("../middleware/validateObjectId");
 const { Genre, validateGenre } = require("../models/genre");
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", async (req, res) => {
   const genres = await Genre.find({}).sort("name");

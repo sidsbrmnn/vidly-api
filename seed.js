@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-const config = require("config");
-const mongoose = require("mongoose");
+const { get } = require("config");
+const { connect, disconnect } = require("mongoose");
 const { Genre } = require("./models/genre");
 const { Movie } = require("./models/movie");
 
@@ -40,7 +40,10 @@ const data = [
 ];
 
 async function seed() {
-  await mongoose.connect(config.get("db"), { useNewUrlParser: true });
+  await connect(
+    get("db"),
+    { useNewUrlParser: true }
+  );
 
   await Movie.deleteMany({});
   await Genre.deleteMany({});
@@ -54,7 +57,7 @@ async function seed() {
     await Movie.insertMany(movies);
   }
 
-  mongoose.disconnect();
+  disconnect();
 
   console.info("Done!");
 }

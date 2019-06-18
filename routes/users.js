@@ -1,9 +1,9 @@
-const bcrypt = require("bcrypt");
-const _ = require("lodash");
-const express = require("express");
+const { genSalt, hash } = require("bcrypt");
+const { pick } = require("lodash");
+const { Router } = require("express");
 const { User, validateUser } = require("../models/user");
 
-const router = express.Router();
+const router = Router();
 
 router.post("/", async (req, res) => {
   const { error } = validateUser(req.body);
@@ -12,9 +12,9 @@ router.post("/", async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User already registered.");
 
-  user = new User(_.pick(req.body, ["name", "email", "password"]));
-  const salt = await bcrypt.genSalt(10);
-  user.password = await bcrypt.hash(user.password, salt);
+  user = new User(pick(req.body, ["name", "email", "password"]));
+  const salt = await genSalt(10);
+  user.password = await hash(user.password, salt);
 
   await user.save();
 
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
   res
     .header("x-auth-token", token)
     .header("access-control-expose-headers", "x-auth-token")
-    .send(_.pick(user, ["_id", "name", "email"]));
+    .send(pick(user, ["_id", "name", "email"]));
 });
 
 module.exports = router;

@@ -1,10 +1,10 @@
 const Joi = require("@hapi/joi");
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 const { genreSchema } = require("./genre");
 
-const Movie = mongoose.model(
+const Movie = model(
   "Movie",
-  new mongoose.Schema({
+  new Schema({
     title: { type: String, required: true, trim: true },
     genre: { type: genreSchema, required: true },
     numberInStock: { type: Number, required: true },

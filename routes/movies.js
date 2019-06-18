@@ -1,9 +1,9 @@
-const express = require("express");
+const { Router } = require("express");
 const validateObjectId = require("../middleware/validateObjectId");
 const { Movie, validateMovie } = require("../models/movie");
 const { Genre } = require("../models/genre");
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", async (req, res) => {
   const movies = await Movie.find({}).sort("title");

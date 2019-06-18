@@ -1,9 +1,9 @@
-const express = require("express");
+const { Router } = require("express");
 const auth = require("../middleware/auth");
 const { Movie } = require("../models/movie");
 const { Rental, validateRental } = require("../models/rental");
 
-const router = express.Router();
+const router = Router();
 
 router.post("/", auth, async (req, res) => {
   const { error } = validateRental(req.body);

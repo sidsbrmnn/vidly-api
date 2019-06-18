@@ -1,19 +1,15 @@
-const config = require("config");
+const { get } = require("config");
 const express = require("express");
-const winston = require("winston");
+const { info } = require("winston");
 
 const app = express();
 
 require("./startup/logging")();
-require("./startup/prod")(app);
+if (process.env.NODE_ENV === "production") require("./startup/prod")(app);
 require("./startup/routes")(app);
 require("./startup/db")();
 require("./startup/config")();
 require("./startup/validation")();
 
-const port = process.env.PORT || config.get("port");
-const server = app.listen(port, () =>
-  winston.info(`Listening on port ${port}`)
-);
-
-module.exports = server;
+const port = process.env.PORT || get("port");
+app.listen(port, () => info(`Listening on port ${port}`));

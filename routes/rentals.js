@@ -1,14 +1,14 @@
-const express = require("express");
-const Fawn = require("fawn");
-const _ = require("lodash");
+const { Router } = require("express");
+const { init, Task } = require("fawn");
+const { pick } = require("lodash");
 const mongoose = require("mongoose");
 const validateObjectId = require("../middleware/validateObjectId");
 const { Customer } = require("../models/customer");
 const { Movie } = require("../models/movie");
 const { Rental, validateRental } = require("../models/rental");
 
-const router = express.Router();
-Fawn.init(mongoose);
+const router = Router();
+init(mongoose);
 
 router.get("/", async (req, res) => {
   const rentals = await Rental.find({}).sort("-dateOut");
@@ -29,12 +29,12 @@ router.post("/", async (req, res) => {
     return res.status(400).send("Movie not in stock.");
 
   const rental = new Rental({
-    customer: _.pick(customer, ["_id", "name", "phone", "isGold"]),
-    movie: _.pick(movie, ["_id", "title", "dailyRentalRate"])
+    customer: pick(customer, ["_id", "name", "phone", "isGold"]),
+    movie: pick(movie, ["_id", "title", "dailyRentalRate"])
   });
 
   try {
-    new Fawn.Task()
+    new Task()
       .save("rentals", rental)
       .update("movies", { _id: movie._id }, { $inc: { numberInStock: -1 } })
       .run();

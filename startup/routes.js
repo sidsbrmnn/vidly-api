@@ -1,4 +1,4 @@
-const express = require("express");
+const { json } = require("express");
 const error = require("../middleware/error");
 const auth = require("../routes/auth");
 const customers = require("../routes/customers");
@@ -9,7 +9,7 @@ const returns = require("../routes/returns");
 const users = require("../routes/users");
 
 module.exports = function(app) {
-  app.use(express.json());
+  app.use(json());
   app.use("/api/auth", auth);
   app.use("/api/customers", customers);
   app.use("/api/genres", genres);

@@ -1,10 +1,10 @@
 const Joi = require("@hapi/joi");
 const moment = require("moment");
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const rentalSchema = new mongoose.Schema({
+const rentalSchema = new Schema({
   customer: {
-    type: new mongoose.Schema({
+    type: new Schema({
       name: { type: String, required: true },
       isGold: { type: Boolean, required: true },
       phone: { type: String, required: true }
@@ -12,7 +12,7 @@ const rentalSchema = new mongoose.Schema({
     required: true
   },
   movie: {
-    type: new mongoose.Schema({
+    type: new Schema({
       title: { type: String, required: true, trim: true },
       dailyRentalRate: { type: Number, required: true }
     }),
@@ -37,7 +37,7 @@ rentalSchema.methods.return = function() {
   this.rentalFee = rentalDays * this.movie.dailyRentalRate;
 };
 
-const Rental = mongoose.model("Rental", rentalSchema);
+const Rental = model("Rental", rentalSchema);
 
 function validateRental(rental) {
   const schema = {

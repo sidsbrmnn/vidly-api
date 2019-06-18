@@ -1,9 +1,9 @@
 const Joi = require("@hapi/joi");
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const Customer = mongoose.model(
+const Customer = model(
   "Customer",
-  new mongoose.Schema({
+  new Schema({
     name: { type: String, required: true },
     phone: { type: String, required: true },
     isGold: { type: Boolean, default: false }

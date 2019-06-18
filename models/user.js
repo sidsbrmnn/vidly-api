@@ -1,9 +1,9 @@
-const config = require("config");
+const { get } = require("config");
 const Joi = require("@hapi/joi");
-const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
+const { sign } = require("jsonwebtoken");
+const { Schema, model } = require("mongoose");
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -11,19 +11,19 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.generateAuthToken = function() {
-  const token = jwt.sign(
+  const token = sign(
     {
       _id: this._id,
       name: this.name,
       email: this.email,
       isAdmin: this.isAdmin
     },
-    config.get("jwtPrivateKey")
+    get("jwtPrivateKey")
   );
   return token;
 };
 
-const User = mongoose.model("User", userSchema);
+const User = model("User", userSchema);
 
 function validateUser(user) {
   const schema = {
