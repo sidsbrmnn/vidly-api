@@ -1,4 +1,4 @@
-const { get } = require("config");
+const config = require("config");
 const express = require("express");
 const { info } = require("winston");
 
@@ -11,5 +11,5 @@ require("./startup/db")();
 require("./startup/config")();
 require("./startup/validation")();
 
-const port = process.env.PORT || get("port");
+const port = process.env.PORT || config.get("port");
 app.listen(port, () => info(`Listening on port ${port}`));

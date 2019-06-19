@@ -1,4 +1,4 @@
-const { get } = require("config");
+const config = require("config");
 const Joi = require("@hapi/joi");
 const { sign } = require("jsonwebtoken");
 const { Schema, model } = require("mongoose");
@@ -18,7 +18,7 @@ userSchema.methods.generateAuthToken = function() {
       email: this.email,
       isAdmin: this.isAdmin
     },
-    get("jwtPrivateKey")
+    config.get("jwtPrivateKey")
   );
   return token;
 };
