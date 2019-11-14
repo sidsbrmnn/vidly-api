@@ -9,8 +9,9 @@ export interface IRental extends Document {
     customer: ICustomer['_id'];
     movie: IMovie['_id'];
     dateOut: Date;
-    dateReturned: Date;
-    rentalFee: number;
+    dateReturned?: Date;
+    rentalFee?: number;
+    return(): any;
 }
 
 export interface IRentalInput {
@@ -29,21 +30,15 @@ const RentalSchema: Schema = new Schema({
         ref: 'movie',
         required: true
     },
-    dateOut: { type: Date, default: Date.now }
-});
-
-RentalSchema.static('lookup', function(rental: IRentalInput): object {
-    return this.findOne({
-        customer: rental.customerId,
-        movie: rental.movieId
-    })
-        .populate('customer')
-        .populate('movie');
+    dateOut: { type: Date, default: Date.now },
+    dateReturned: { type: Date },
+    rentalFee: { type: Number, min: 0 }
 });
 
 RentalSchema.method('return', function() {
     this.dateReturned = new Date();
     const days = moment().diff(this.dateOut, 'days');
+
     this.rentalFee = days * this.movie.dailyRentalRate;
 });
 
