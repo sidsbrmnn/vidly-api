@@ -28,7 +28,7 @@
     "helmet": "^3.18.0",
     "joi-objectid": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "moment": "^2.24.0",
     "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
