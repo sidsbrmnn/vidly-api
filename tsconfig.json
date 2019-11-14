@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "allowJs": true,
+        "outDir": "build",
+        "esModuleInterop": true,
+        "typeRoots": ["./custom.d.ts"]
+    }
+}
