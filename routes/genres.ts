@@ -1,8 +1,5 @@
 import express, { Request, Response } from 'express';
 
-import admin from '../middlewares/admin';
-import auth from '../middlewares/auth';
-
 import Genre, { validateGenre } from '../models/genre';
 import Movie from '../models/movie';
 
@@ -17,9 +14,10 @@ router.get('/', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
     const { error } = validateGenre(req.body);
     if (error)
-        return res
-            .status(400)
-            .send({ success: false, message: error.details[0].message });
+        return res.status(400).send({
+            success: false,
+            message: error.details[0].message
+        });
 
     const genre = new Genre({ name: req.body.name });
     await genre.save();
@@ -30,16 +28,16 @@ router.post('/', async (req: Request, res: Response) => {
 router.put('/:id', async (req: Request, res: Response) => {
     const { error } = validateGenre(req.body);
     if (error)
-        return res
-            .status(400)
-            .send({ success: false, message: error.details[0].message });
+        return res.status(400).send({
+            success: false,
+            message: error.details[0].message
+        });
 
     const genre = await Genre.findOneAndUpdate(
         { _id: req.params.id },
         { name: req.body.name },
         { new: true }
     );
-
     if (!genre)
         return res.status(404).send({
             success: false,
