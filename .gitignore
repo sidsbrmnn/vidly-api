@@ -105,6 +105,7 @@ typings/
 .nuxt
 
 # react / gatsby
+build/
 public/
 
 # vuepress build output
