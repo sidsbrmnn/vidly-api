@@ -1,5 +1,6 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import _ from 'lodash';
+import { Types } from 'mongoose';
 
 import Genre from '../models/genre';
 import Movie, { validateMovie } from '../models/movie';
@@ -7,8 +8,20 @@ import Rental from '../models/rental';
 
 const router = express.Router();
 
+router.use('/:id', (req: Request, res: Response, next: NextFunction) => {
+    if (!Types.ObjectId.isValid(req.params.id))
+        return res.status(404).send({
+            success: false,
+            message: 'The movie with the given ID was not found'
+        });
+
+    next();
+});
+
 router.get('/', async (req: Request, res: Response) => {
-    const movies = await Movie.find().sort('title');
+    const movies = await Movie.find()
+        .populate('genre')
+        .sort('title');
 
     res.send({ success: true, movies });
 });
@@ -90,7 +103,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
 });
 
 router.get('/:id', async (req: Request, res: Response) => {
-    const movie = await Movie.findOne({ _id: req.params.id });
+    const movie = await Movie.findOne({ _id: req.params.id }).populate('genre');
     if (!movie)
         return res.status(404).send({
             success: false,

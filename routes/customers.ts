@@ -1,10 +1,21 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import _ from 'lodash';
+import { Types } from 'mongoose';
 
 import Customer, { validateCustomer } from '../models/customer';
 import Rental from '../models/rental';
 
 const router = express.Router();
+
+router.use('/:id', (req: Request, res: Response, next: NextFunction) => {
+    if (!Types.ObjectId.isValid(req.params.id))
+        return res.status(404).send({
+            success: false,
+            message: 'The customer with the given ID was not found'
+        });
+
+    next();
+});
 
 router.get('/', async (req: Request, res: Response) => {
     const customers = await Customer.find().sort('name');

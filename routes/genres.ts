@@ -1,9 +1,20 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
+import { Types } from 'mongoose';
 
 import Genre, { validateGenre } from '../models/genre';
 import Movie from '../models/movie';
 
 const router = express.Router();
+
+router.use('/:id', (req: Request, res: Response, next: NextFunction) => {
+    if (!Types.ObjectId.isValid(req.params.id))
+        return res.status(404).send({
+            success: false,
+            message: 'The genre with the given ID was not found'
+        });
+
+    next();
+});
 
 router.get('/', async (req: Request, res: Response) => {
     const genres = await Genre.find().sort('name');
