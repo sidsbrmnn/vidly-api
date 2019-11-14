@@ -1,4 +1,4 @@
-import Joi, { Schema as JoiSchema } from '@hapi/joi';
+import Joi, { ObjectSchema, ValidationResult } from '@hapi/joi';
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface ICustomer extends Document {
@@ -19,8 +19,8 @@ const CustomerSchema: Schema = new Schema({
     isGold: { type: Boolean, default: false }
 });
 
-export function validateCustomer(customer: ICustomerInput): object {
-    const schema: JoiSchema = Joi.object({
+export function validateCustomer(customer: ICustomerInput): ValidationResult {
+    const schema: ObjectSchema = Joi.object({
         name: Joi.string().required(),
         phone: Joi.string().required(),
         isGold: Joi.boolean()

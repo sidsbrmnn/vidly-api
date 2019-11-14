@@ -1,4 +1,4 @@
-import Joi, { Schema as JoiSchema } from '@hapi/joi';
+import Joi, { ObjectSchema, ValidationResult } from '@hapi/joi';
 import mongoose, { Schema, Document } from 'mongoose';
 import { IGenre } from './genre';
 
@@ -23,8 +23,8 @@ const MovieSchema: Schema = new Schema({
     rentalRate: { type: Number, min: 0, required: true }
 });
 
-export function validateMovie(movie: IMovieInput): object {
-    const schema: JoiSchema = Joi.object({
+export function validateMovie(movie: IMovieInput): ValidationResult {
+    const schema: ObjectSchema = Joi.object({
         title: Joi.string().required(),
         genreId: Joi.string()
             .regex(/^[0-9a-fA-F]{24}$/)

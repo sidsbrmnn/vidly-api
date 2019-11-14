@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import Joi, { Schema as JoiSchema } from '@hapi/joi';
+import Joi, { ObjectSchema, ValidationResult } from '@hapi/joi';
 import jwt from 'jsonwebtoken';
 import mongoose, { Schema, Document } from 'mongoose';
 
@@ -8,6 +8,7 @@ export interface IUser extends Document {
     email: string;
     password: string;
     isAdmin: boolean;
+    generateAuthToken(): string;
 }
 
 interface IUserInput {
@@ -15,6 +16,11 @@ interface IUserInput {
     email: IUser['email'];
     password: IUser['password'];
     isAdmin?: IUser['isAdmin'];
+}
+
+interface ILoginInput {
+    email: IUser['email'];
+    password: IUser['password'];
 }
 
 const UserSchema: Schema = new Schema({
@@ -55,14 +61,25 @@ UserSchema.method('generateAuthToken', function(): string {
     return token;
 });
 
-export function validateUser(user: IUserInput): object {
-    const schema: JoiSchema = Joi.object({
+export function validateUser(user: IUserInput): ValidationResult {
+    const schema: ObjectSchema = Joi.object({
         name: Joi.string().required(),
         email: Joi.string()
             .email()
             .required(),
         password: Joi.string().required(),
         phone: Joi.string().required()
+    });
+
+    return schema.validate(user);
+}
+
+export function validateLogin(user: ILoginInput): ValidationResult {
+    const schema: ObjectSchema = Joi.object({
+        email: Joi.string()
+            .email()
+            .required(),
+        password: Joi.string().required()
     });
 
     return schema.validate(user);

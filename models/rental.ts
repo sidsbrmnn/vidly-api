@@ -1,4 +1,4 @@
-import Joi, { Schema as JoiSchema } from '@hapi/joi';
+import Joi, { ObjectSchema, ValidationResult } from '@hapi/joi';
 import moment from 'moment';
 import mongoose, { Schema, Document } from 'mongoose';
 
@@ -47,8 +47,8 @@ RentalSchema.method('return', function() {
     this.rentalFee = days * this.movie.dailyRentalRate;
 });
 
-export function validateRental(rental: IRentalInput): object {
-    const schema: JoiSchema = Joi.object({
+export function validateRental(rental: IRentalInput): ValidationResult {
+    const schema: ObjectSchema = Joi.object({
         customerId: Joi.string()
             .regex(/^[0-9a-fA-F]{24}$/)
             .required(),

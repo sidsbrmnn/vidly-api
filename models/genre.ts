@@ -1,4 +1,4 @@
-import Joi, { Schema as JoiSchema } from '@hapi/joi';
+import Joi, { ObjectSchema, ValidationResult } from '@hapi/joi';
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IGenre extends Document {
@@ -13,8 +13,8 @@ const GenreSchema: Schema = new Schema({
     name: { type: String, required: true }
 });
 
-export function validateGenre(genre: IGenreInput): object {
-    const schema: JoiSchema = Joi.object({
+export function validateGenre(genre: IGenreInput): ValidationResult {
+    const schema: ObjectSchema = Joi.object({
         name: Joi.string().required()
     });
 
