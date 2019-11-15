@@ -6,15 +6,15 @@ This branch consists of the same code in Typescript.
 
 ## Installation
 
-Have Node.js installed. Set an environment variable called `JWT_SECRET` with some value that'll act as a secret key for encoding the jsonwebtoken.
+Set all the environment variables in a `.env` file
 
-The other environment variables are
+```
+JWT_SECRET='some secret key'
 
--   PORT
--   NODE_ENV
--   MONGODB_URI
-
-These 3 environment variables are optional. All of those variables can be set using a `.env` file in the root of the folder.
+# Optional
+# PORT
+# MONGODB_URI
+```
 
 To install all the dependencies, run
 
