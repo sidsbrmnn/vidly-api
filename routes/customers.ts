@@ -23,27 +23,14 @@ router.get('/', async (req: Request, res: Response) => {
     res.send({ success: true, customers });
 });
 
-router.post('/', async (req: Request, res: Response) => {
-    const { error } = validateCustomer(req.body);
-    if (error)
-        return res
-            .status(400)
-            .send({ success: false, message: error.details[0].message });
-
+router.post('/', validateCustomer, async (req: Request, res: Response) => {
     const customer = new Customer(_.pick(req.body, ['name', 'phone']));
     await customer.save();
 
     res.send({ success: true, customer });
 });
 
-router.put('/:id', async (req: Request, res: Response) => {
-    const { error } = validateCustomer(req.body);
-    if (error)
-        return res.status(400).send({
-            success: false,
-            message: error.details[0].message
-        });
-
+router.put('/:id', validateCustomer, async (req: Request, res: Response) => {
     const customer = await Customer.findOneAndUpdate(
         { _id: req.params.id },
         _.pick(req.body, ['name', 'phone', 'isGold']),

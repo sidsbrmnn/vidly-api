@@ -1,4 +1,5 @@
-import Joi, { ObjectSchema, ValidationResult } from '@hapi/joi';
+import { Request, Response, NextFunction } from 'express';
+import Joi from '@hapi/joi';
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface ICustomer extends Document {
@@ -19,14 +20,24 @@ const CustomerSchema: Schema = new Schema({
     isGold: { type: Boolean, default: false }
 });
 
-export function validateCustomer(customer: ICustomerInput): ValidationResult {
-    const schema: ObjectSchema = Joi.object({
+export function validateCustomer(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    const schema = Joi.object({
         name: Joi.string().required(),
         phone: Joi.string().required(),
         isGold: Joi.boolean()
     });
+    const { error } = schema.validate(req.body);
+    if (error)
+        return res.status(400).send({
+            success: false,
+            message: error.details[0].message
+        });
 
-    return schema.validate(customer);
+    next();
 }
 
 export default mongoose.model<ICustomer>('customer', CustomerSchema);
