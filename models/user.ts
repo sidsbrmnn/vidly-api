@@ -68,15 +68,21 @@ export function validateUser(req: Request, res: Response, next: NextFunction) {
     next();
 }
 
-export function validateLogin(user: ILoginInput): ValidationResult {
-    const schema: ObjectSchema = Joi.object({
+export function validateLogin(req: Request, res: Response, next: NextFunction) {
+    const schema = Joi.object({
         email: Joi.string()
             .email()
             .required(),
         password: Joi.string().required()
     });
+    const { error } = schema.validate(req.body);
+    if (error)
+        return res.status(400).send({
+            success: false,
+            message: error.details[0].message
+        });
 
-    return schema.validate(user);
+    next();
 }
 
 export default mongoose.model<IUser>('user', UserSchema);
