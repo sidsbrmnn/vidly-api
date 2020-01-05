@@ -22,28 +22,14 @@ router.get('/', async (req: Request, res: Response) => {
     res.send({ success: true, genres });
 });
 
-router.post('/', async (req: Request, res: Response) => {
-    const { error } = validateGenre(req.body);
-    if (error)
-        return res.status(400).send({
-            success: false,
-            message: error.details[0].message
-        });
-
+router.post('/', validateGenre, async (req: Request, res: Response) => {
     const genre = new Genre({ name: req.body.name });
     await genre.save();
 
     res.send({ success: true, genre });
 });
 
-router.put('/:id', async (req: Request, res: Response) => {
-    const { error } = validateGenre(req.body);
-    if (error)
-        return res.status(400).send({
-            success: false,
-            message: error.details[0].message
-        });
-
+router.put('/:id', validateGenre, async (req: Request, res: Response) => {
     const genre = await Genre.findOneAndUpdate(
         { _id: req.params.id },
         { name: req.body.name },

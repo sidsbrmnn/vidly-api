@@ -1,4 +1,5 @@
-import Joi, { ObjectSchema, ValidationResult } from '@hapi/joi';
+import { Request, Response, NextFunction } from 'express';
+import Joi from '@hapi/joi';
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IGenre extends Document {
@@ -13,12 +14,18 @@ const GenreSchema: Schema = new Schema({
     name: { type: String, required: true }
 });
 
-export function validateGenre(genre: IGenreInput): ValidationResult {
-    const schema: ObjectSchema = Joi.object({
+export function validateGenre(req: Request, res: Response, next: NextFunction) {
+    const schema = Joi.object({
         name: Joi.string().required()
     });
+    const { error } = schema.validate(req.body);
+    if (error)
+        return res.status(400).send({
+            success: false,
+            message: error.details[0].message
+        });
 
-    return schema.validate(genre);
+    next();
 }
 
 export default mongoose.model<IGenre>('genre', GenreSchema);
