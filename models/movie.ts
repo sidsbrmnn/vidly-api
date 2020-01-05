@@ -1,6 +1,8 @@
-import Joi, { ObjectSchema, ValidationResult } from '@hapi/joi';
+import { Request, Response, NextFunction } from 'express';
+import Joi from '@hapi/joi';
 import mongoose, { Schema, Document } from 'mongoose';
-import { IGenre } from './genre';
+
+import Genre, { IGenre } from './genre';
 
 export interface IMovie extends Document {
     title: string;
@@ -23,8 +25,12 @@ const MovieSchema: Schema = new Schema({
     rentalRate: { type: Number, min: 0, required: true }
 });
 
-export function validateMovie(movie: IMovieInput): ValidationResult {
-    const schema: ObjectSchema = Joi.object({
+export async function validateMovie(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    const schema = Joi.object({
         title: Joi.string().required(),
         genreId: Joi.string()
             .regex(/^[0-9a-fA-F]{24}$/)
@@ -36,8 +42,21 @@ export function validateMovie(movie: IMovieInput): ValidationResult {
             .min(0)
             .required()
     });
+    const { error } = schema.validate(req.body);
+    if (error)
+        return res.status(400).send({
+            success: false,
+            message: error.details[0].message
+        });
 
-    return schema.validate(movie);
+    const genre = await Genre.findOne({ _id: req.body.genreId });
+    if (!genre)
+        return res.status(400).send({
+            success: false,
+            message: 'Invalid genre'
+        });
+
+    next();
 }
 
 export default mongoose.model<IMovie>('movie', MovieSchema);

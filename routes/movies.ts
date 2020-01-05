@@ -2,7 +2,6 @@ import express, { Request, Response, NextFunction } from 'express';
 import _ from 'lodash';
 import { Types } from 'mongoose';
 
-import Genre from '../models/genre';
 import Movie, { validateMovie } from '../models/movie';
 import Rental from '../models/rental';
 
@@ -26,50 +25,22 @@ router.get('/', async (req: Request, res: Response) => {
     res.send({ success: true, movies });
 });
 
-router.post('/', async (req: Request, res: Response) => {
-    const { error } = validateMovie(req.body);
-    if (error)
-        return res.status(400).send({
-            success: false,
-            message: error.details[0].message
-        });
-
-    const genre = await Genre.findOne({ _id: req.body.genreId });
-    if (!genre)
-        return res.status(400).send({
-            success: false,
-            message: 'Invalid genre'
-        });
-
+router.post('/', validateMovie, async (req: Request, res: Response) => {
     const movie = new Movie({
         ..._.pick(req.body, ['title', 'inStock', 'rentalRate']),
-        genre: genre._id
+        genre: req.body.genreId
     });
     await movie.save();
 
     res.send({ success: true, movie });
 });
 
-router.put('/:id', async (req: Request, res: Response) => {
-    const { error } = validateMovie(req.body);
-    if (error)
-        return res.status(400).send({
-            success: false,
-            message: error.details[0].message
-        });
-
-    const genre = await Genre.findOne({ _id: req.body.genreId });
-    if (!genre)
-        return res.status(400).send({
-            success: false,
-            message: 'Invalid genre'
-        });
-
+router.put('/:id', validateMovie, async (req: Request, res: Response) => {
     const movie = await Movie.findOneAndUpdate(
         { _id: req.params.id },
         {
             ..._.pick(req.body, ['title', 'inStock', 'rentalRate']),
-            genre: genre._id
+            genre: req.body.genreId
         },
         { new: true }
     );
