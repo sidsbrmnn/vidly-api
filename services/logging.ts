@@ -6,5 +6,6 @@ export default function() {
 
     process.on('unhandledRejection', (reason, promise) => {
         console.log('Unhandled rejection at:', promise, 'Reason:', reason);
+        process.exit(2);
     });
 }
