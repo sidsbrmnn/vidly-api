@@ -2,8 +2,6 @@ import express, { Request, Response, NextFunction } from 'express';
 import _ from 'lodash';
 import { Types } from 'mongoose';
 
-import Customer from '../models/customer';
-import Movie from '../models/movie';
 import Rental, { validateRental } from '../models/rental';
 
 const router = express.Router();
@@ -24,38 +22,31 @@ router.get('/', async (req: Request, res: Response) => {
     res.send({ success: true, rentals });
 });
 
-router.post('/', async (req: Request, res: Response) => {
-    const { error } = validateRental(req.body);
-    if (error)
+router.post('/', validateRental, async (req: Request, res: Response) => {
+    let rental = await Rental.findOne({
+        customer: res.locals.customer._id,
+        movie: res.locals.movie._id
+    });
+    if (res.locals.rental)
         return res.status(400).send({
             success: false,
-            message: error.details[0].message
+            message: 'Customer has already rented this movie'
         });
 
-    const customer = await Customer.findOne({ _id: req.body.customerId });
-    if (!customer)
-        return res.status(400).send({
-            success: false,
-            message: 'Invalid customer'
-        });
-
-    const movie = await Movie.findOne({ _id: req.body.movieId });
-    if (!movie)
-        return res.status(400).send({
-            success: false,
-            message: 'Invalid movie'
-        });
-    if (movie.inStock === 0)
+    if (res.locals.movie.inStock === 0)
         return res.status(400).send({
             success: false,
             message: 'Movie not in stock'
         });
 
-    const rental = new Rental({
-        customer: customer._id,
-        movie: movie._id
+    rental = new Rental({
+        customer: res.locals.customer._id,
+        movie: res.locals.movie._id
     });
-    await Promise.all([rental.save(), movie.update({ $inc: { inStock: -1 } })]);
+    await Promise.all([
+        rental.save(),
+        res.locals.movie.updateOne({ $inc: { inStock: -1 } })
+    ]);
 
     res.send({ success: true, rental });
 });

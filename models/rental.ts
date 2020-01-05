@@ -1,9 +1,10 @@
-import Joi, { ObjectSchema, ValidationResult } from '@hapi/joi';
+import { Request, Response, NextFunction } from 'express';
+import Joi from '@hapi/joi';
 import moment from 'moment';
 import mongoose, { Schema, Document } from 'mongoose';
 
-import { ICustomer } from './customer';
-import { IMovie } from './movie';
+import Customer, { ICustomer } from './customer';
+import Movie, { IMovie } from './movie';
 
 export interface IRental extends Document {
     customer: ICustomer['_id'];
@@ -11,7 +12,7 @@ export interface IRental extends Document {
     dateOut: Date;
     dateReturned?: Date;
     rentalFee?: number;
-    return(): any;
+    return(): void;
 }
 
 export interface IRentalInput {
@@ -39,11 +40,15 @@ RentalSchema.method('return', function() {
     this.dateReturned = new Date();
     const days = moment().diff(this.dateOut, 'days');
 
-    this.rentalFee = days * this.movie.dailyRentalRate;
+    this.rentalFee = days * this.movie.rentalRate;
 });
 
-export function validateRental(rental: IRentalInput): ValidationResult {
-    const schema: ObjectSchema = Joi.object({
+export async function validateRental(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    const schema = Joi.object({
         customerId: Joi.string()
             .regex(/^[0-9a-fA-F]{24}$/)
             .required(),
@@ -51,8 +56,30 @@ export function validateRental(rental: IRentalInput): ValidationResult {
             .regex(/^[0-9a-fA-F]{24}$/)
             .required()
     });
+    const { error } = schema.validate(req.body);
+    if (error)
+        return res.status(400).send({
+            success: false,
+            message: error.details[0].message
+        });
 
-    return schema.validate(rental);
+    const customer = await Customer.findOne({ _id: req.body.customerId });
+    if (!customer)
+        return res.status(400).send({
+            success: false,
+            message: 'Invalid customer'
+        });
+
+    const movie = await Movie.findOne({ _id: req.body.movieId });
+    if (!movie)
+        return res.status(400).send({
+            success: false,
+            message: 'Invalid movie'
+        });
+
+    res.locals.customer = customer;
+    res.locals.movie = movie;
+    next();
 }
 
 export default mongoose.model<IRental>('rental', RentalSchema);
