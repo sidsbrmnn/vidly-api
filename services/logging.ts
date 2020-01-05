@@ -1,3 +1,5 @@
+require('express-async-errors');
+
 export default function() {
     process.on('uncaughtException', error => {
         console.log(error);
