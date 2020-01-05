@@ -1,5 +1,6 @@
+import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
-import Joi, { ObjectSchema, ValidationResult } from '@hapi/joi';
+import Joi from '@hapi/joi';
 import jwt from 'jsonwebtoken';
 import mongoose, { Schema, Document } from 'mongoose';
 
@@ -48,21 +49,8 @@ UserSchema.methods.generateAuthToken = function(): string {
     return token;
 };
 
-UserSchema.method('generateAuthToken', function(): string {
-    const token = jwt.sign(
-        {
-            _id: this._id,
-            name: this.name,
-            isAdmin: this.isAdmin
-        },
-        process.env.JWT_SECRET
-    );
-
-    return token;
-});
-
-export function validateUser(user: IUserInput): ValidationResult {
-    const schema: ObjectSchema = Joi.object({
+export function validateUser(req: Request, res: Response, next: NextFunction) {
+    const schema = Joi.object({
         name: Joi.string().required(),
         email: Joi.string()
             .email()
@@ -70,8 +58,14 @@ export function validateUser(user: IUserInput): ValidationResult {
         password: Joi.string().required(),
         phone: Joi.string().required()
     });
+    const { error } = schema.validate(req.body);
+    if (error)
+        return res.status(400).send({
+            success: false,
+            message: error.details[0].message
+        });
 
-    return schema.validate(user);
+    next();
 }
 
 export function validateLogin(user: ILoginInput): ValidationResult {
