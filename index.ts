@@ -17,7 +17,7 @@ db();
 if (process.env.NODE_ENV === 'production') prod(app);
 routes(app);
 
-const port = parseInt(process.env.PORT) || 3000;
+const port = parseInt(process.env.PORT, 10) || 3000;
 app.listen(port, () => {
     console.log('Listening on port ' + port);
 });
