@@ -2,27 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import Joi from '@hapi/joi';
 import jwt from 'jsonwebtoken';
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-export interface IUser extends Document {
-    name: string;
-    email: string;
-    password: string;
-    isAdmin: boolean;
-    generateAuthToken(): string;
-}
-
-interface IUserInput {
-    name: IUser['name'];
-    email: IUser['email'];
-    password: IUser['password'];
-    isAdmin?: IUser['isAdmin'];
-}
-
-interface ILoginInput {
-    email: IUser['email'];
-    password: IUser['password'];
-}
+import { IUser } from '../interfaces';
 
 const UserSchema: Schema = new Schema({
     name: { type: String, required: true },

@@ -1,24 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import Joi from '@hapi/joi';
 import moment from 'moment';
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-import Customer, { ICustomer } from './customer';
-import Movie, { IMovie } from './movie';
-
-export interface IRental extends Document {
-    customer: ICustomer['_id'];
-    movie: IMovie['_id'];
-    dateOut: Date;
-    dateReturned?: Date;
-    rentalFee?: number;
-    return(): void;
-}
-
-export interface IRentalInput {
-    customerId: IRental['customer'];
-    movieId: IRental['movie'];
-}
+import Customer from './customer';
+import Movie from './movie';
+import { IRental } from '../interfaces';
 
 const RentalSchema: Schema = new Schema({
     customer: {
@@ -64,17 +51,11 @@ export async function validateRental(
         });
 
     const customer = await Customer.findOne({ _id: req.body.customerId });
-    if (!customer)
-        return res.status(400).send({
-            success: false,
-            message: 'Invalid customer'
-        });
-
     const movie = await Movie.findOne({ _id: req.body.movieId });
-    if (!movie)
+    if (!movie || !customer)
         return res.status(400).send({
             success: false,
-            message: 'Invalid movie'
+            message: 'Invalid movie/customer'
         });
 
     res.locals.customer = customer;

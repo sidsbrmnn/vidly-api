@@ -1,18 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import Joi from '@hapi/joi';
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-export interface ICustomer extends Document {
-    name: string;
-    phone: string;
-    isGold: boolean;
-}
-
-interface ICustomerInput extends Document {
-    name: ICustomer['name'];
-    phone: ICustomer['phone'];
-    isGold?: ICustomer['isGold'];
-}
+import { ICustomer } from '../interfaces';
 
 const CustomerSchema: Schema = new Schema({
     name: { type: String, required: true },

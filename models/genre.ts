@@ -1,14 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import Joi from '@hapi/joi';
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-export interface IGenre extends Document {
-    name: string;
-}
-
-interface IGenreInput extends Document {
-    name: IGenre['name'];
-}
+import { IGenre } from '../interfaces';
 
 const GenreSchema: Schema = new Schema({
     name: { type: String, required: true }

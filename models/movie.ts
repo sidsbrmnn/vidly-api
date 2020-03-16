@@ -1,22 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import Joi from '@hapi/joi';
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-import Genre, { IGenre } from './genre';
-
-export interface IMovie extends Document {
-    title: string;
-    genre: IGenre['_id'];
-    inStock: number;
-    rentalRate: number;
-}
-
-export interface IMovieInput {
-    title: IMovie['title'];
-    genreId: IMovie['genre'];
-    inStock: IMovie['inStock'];
-    rentalRate: IMovie['rentalRate'];
-}
+import Genre from './genre';
+import { IMovie } from '../interfaces';
 
 const MovieSchema: Schema = new Schema({
     title: { type: String, required: true },
