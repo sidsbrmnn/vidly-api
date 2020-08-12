@@ -2,9 +2,13 @@
     "compilerOptions": {
         "target": "es6",
         "module": "commonjs",
-        "allowJs": true,
-        "outDir": "build",
+        "outDir": "dist",
         "esModuleInterop": true,
-        "typeRoots": ["./custom.d.ts"]
-    }
+        "strict": true,
+        "noImplicitAny": true,
+        "sourceMap": true,
+        "forceConsistentCasingInFileNames": true,
+        "typeRoots": ["@types"]
+    },
+    "include": ["src"]
 }

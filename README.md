@@ -8,12 +8,11 @@ This branch consists of the same code in Typescript.
 
 Set all the environment variables in a `.env` file
 
-```
-JWT_SECRET='some secret key'
-
+```bash
 # Optional
-# PORT
-# MONGODB_URI
+# PORT=3900
+# MONGO_URI='<mongo-instance>'
+# JWT_SECRET='<some-secret-key>'
 ```
 
 To install all the dependencies, run
