@@ -1,7 +1,6 @@
-import bodyParser from 'body-parser';
 import compression from 'compression';
 import cors from 'cors';
-import { Application } from 'express';
+import express, { Application } from 'express';
 import helmet from 'helmet';
 import logger from 'morgan';
 import error from '../middlewares/error';
@@ -15,8 +14,8 @@ export function initialiseMiddlewares(app: Application): void {
         app.use(compression());
     }
 
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: false }));
 
     app.use('/api', router);
 
