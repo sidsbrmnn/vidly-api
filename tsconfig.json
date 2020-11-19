@@ -8,6 +8,5 @@
         "noImplicitAny": true,
         "sourceMap": true,
         "forceConsistentCasingInFileNames": true
-    },
-    "include": ["src"]
+    }
 }
