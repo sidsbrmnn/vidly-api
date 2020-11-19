@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { Types } from 'mongoose';
-
 import auth from '../middlewares/auth';
 import Customer, { validateCustomer } from '../models/customer';
 import HttpError from '../utils/http-error';

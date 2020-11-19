@@ -1,6 +1,5 @@
 import Joi, { ValidationResult } from 'joi';
 import mongoose, { Document, Schema } from 'mongoose';
-
 import { IGenre } from './genre';
 
 interface IMovieInput {

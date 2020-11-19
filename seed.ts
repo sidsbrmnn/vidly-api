@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-
 import Genre from './src/models/genre';
 import Movie from './src/models/movie';
 import { connectMongo } from './src/services/mongo';

@@ -1,5 +1,4 @@
 import { Router } from 'express';
-
 import auth from '../middlewares/auth';
 import Genre, { validateGenre } from '../models/genre';
 import HttpError from '../utils/http-error';

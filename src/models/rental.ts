@@ -1,7 +1,6 @@
 import Joi, { ValidationResult } from 'joi';
 import moment from 'moment';
 import mongoose, { Document, Schema } from 'mongoose';
-
 import { ICustomer } from './customer';
 import { IMovie } from './movie';
 

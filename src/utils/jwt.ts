@@ -1,6 +1,5 @@
 import crypto from 'crypto';
 import jwt, { Secret } from 'jsonwebtoken';
-
 import { IUser } from '../models/user';
 
 interface IPayload {

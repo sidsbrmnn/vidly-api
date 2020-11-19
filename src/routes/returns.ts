@@ -1,5 +1,4 @@
 import { Router } from 'express';
-
 import Customer from '../models/customer';
 import Movie from '../models/movie';
 import Rental, { validateRental } from '../models/rental';

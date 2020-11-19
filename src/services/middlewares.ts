@@ -4,7 +4,6 @@ import cors from 'cors';
 import { Application } from 'express';
 import helmet from 'helmet';
 import logger from 'morgan';
-
 import error from '../middlewares/error';
 import router from '../routes';
 

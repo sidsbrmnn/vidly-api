@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { Types } from 'mongoose';
-
 import Customer from '../models/customer';
 import Movie from '../models/movie';
 import Rental, { validateRental } from '../models/rental';

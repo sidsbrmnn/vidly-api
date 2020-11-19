@@ -1,7 +1,5 @@
 import { Router } from 'express';
-
 import auth from '../middlewares/auth';
-
 import authRouter from './auth';
 import customersRouter from './customers';
 import genresRouter from './genres';

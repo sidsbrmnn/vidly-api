@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { Types } from 'mongoose';
-
 import auth from '../middlewares/auth';
 import Genre from '../models/genre';
 import Movie, { validateMovie } from '../models/movie';

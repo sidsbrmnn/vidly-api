@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { JsonWebTokenError } from 'jsonwebtoken';
-
 import HttpError from '../utils/http-error';
 
 export default function (

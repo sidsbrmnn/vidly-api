@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import Joi, { ValidationResult } from 'joi';
 import mongoose, { Document, Schema } from 'mongoose';
-
 import jwt from '../utils/jwt';
 
 interface IUserInput {

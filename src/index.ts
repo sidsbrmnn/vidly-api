@@ -1,8 +1,6 @@
-import './services/logging';
-
 import dotenv from 'dotenv';
 import express from 'express';
-
+import './services/logging';
 import { initialiseMiddlewares } from './services/middlewares';
 import { connectMongo } from './services/mongo';
 
