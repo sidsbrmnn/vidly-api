@@ -1,3 +1,7 @@
+
+# Created by https://www.toptal.com/developers/gitignore/api/macos,linux,windows,git,node,visualstudiocode
+# Edit at https://www.toptal.com/developers/gitignore?templates=macos,linux,windows,git,node,visualstudiocode
+
 ### Git ###
 # Created by git for backups. To disable backups in Git:
 # $ git config --global mergetool.keepBackup false
@@ -35,7 +39,7 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
 
 # Thumbnails
 ._*
@@ -130,9 +134,11 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
+.env*.local
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
+.parcel-cache
 
 # Next.js build output
 .next
@@ -167,15 +173,14 @@ dist
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
-!.vscode/extensions.json
 *.code-workspace
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
+.ionide
 
 ### Windows ###
 # Windows thumbnail cache files
@@ -202,3 +207,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# End of https://www.toptal.com/developers/gitignore/api/macos,linux,windows,git,node,visualstudiocode
+
