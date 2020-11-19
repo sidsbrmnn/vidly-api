@@ -1,6 +1,7 @@
 {
   "name": "vidly-api",
   "version": "2.0.0",
+  "private": true,
   "description": "This project is the backend of Vidly, an imaginary video rental app which was a part of a course on Udemy.",
   "main": "dist/index.js",
   "dependencies": {
