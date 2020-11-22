@@ -1,5 +1,7 @@
 # vidly-api
 
+[![CodeFactor](https://www.codefactor.io/repository/github/sidsbrmnn/vidly-api/badge)](https://www.codefactor.io/repository/github/sidsbrmnn/vidly-api)
+
 This project is the backend of Vidly, an imaginary video rental app which was a part of a course on Udemy.
 
 This branch consists of the same code in Typescript.
