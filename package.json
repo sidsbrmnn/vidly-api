@@ -45,7 +45,8 @@
     "build": "tsc --project tsconfig.build.json",
     "dev": "nodemon --watch src src/index.ts",
     "seed": "ts-node seed.ts",
-    "test": "jest"
+    "test": "jest",
+    "type-check": "tsc --pretty --noEmit"
   },
   "repository": {
     "type": "git",
