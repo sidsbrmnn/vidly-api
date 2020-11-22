@@ -1,12 +1,17 @@
 {
     "compilerOptions": {
-        "target": "es6",
+        "target": "es5",
         "module": "commonjs",
+        "lib": ["esnext"],
         "outDir": "dist",
-        "esModuleInterop": true,
         "strict": true,
         "noImplicitAny": true,
-        "sourceMap": true,
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "types": ["node", "jest", "express"],
+        "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true
-    }
+    },
+    "exclude": ["types/**/*.d.tsdist"],
+    "include": ["types/**/*.d.ts", "**/*.ts"]
 }
